@@ -38,8 +38,6 @@ const app = express()
 -- database with `mongoose`
 -- `dotenv` for env configuration
 
-need to install mongoose , express , dotenv packages no internet so not installed just code written.
-
 - when connecting with db you must wrap it with `try-catch`
 > database always in another continent
 
