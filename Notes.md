@@ -43,3 +43,26 @@ need to install mongoose , express , dotenv packages no internet so not installe
 - when connecting with db you must wrap it with `try-catch`
 > database always in another continent
 
+
+- url encoding like shivam+webdev or shivam%webdev like this data that come with the url express has to understand it properly so that we use `url-encoding`.
+
+- instead of making seperate function each time for async and try catch so we can create its hoc so that we can use it as many time as we want 
+
+`HOC - Accept function as a parameter and return function` - as treat as like a variable aur kuchh nahi 
+
+- response also we are sending differently each time not proper formate now we will make also hoc for response sending also so that sending response will have proper response 
+
+
+# StatusCode
+
+```
+1. Informational responses (100 - 199)
+
+2. Successful responses (200 - 299)
+
+3. Redirection messages (300 - 399)
+
+4. Client error responses (400 - 499)
+
+5. Server error responses (500 - 599 )
+```
