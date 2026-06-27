@@ -10,7 +10,7 @@ const userSchema = new Schema(
             unique: true,
             lowercase: true,
             trim: true,
-            index: true,
+            index: true, // to make it optimized serchable
         },
         email: {
             type: String,
@@ -34,7 +34,7 @@ const userSchema = new Schema(
         },
         watchHistory: [
             {
-                type: Schema.Types.ObjectId,
+                type: Schema.Types.ObjectId,// video id which we will save 
                 ref: "Video",
             },
         ],
@@ -47,7 +47,7 @@ const userSchema = new Schema(
         },
     },
     {
-        timestamps: true,
+        timestamps: true,// createdAt , updatedAt
     }
 );
 
