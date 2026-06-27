@@ -60,21 +60,11 @@ userSchema.pre("save", async function (next) {
 
 // adding a method to check/compare it with the userPassword
 userSchema.methods.isPasswordCorrect = async function (password) {
-    return await bcrypt.compare(password, this.password);
+    return await bcrypt.compare(password, this.password);// true or false return hoga
 };
 
+
 userSchema.methods.generateAccessToken = function () {
-    return jwt.sign(
-        {
-            _id: this._id,
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-            expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
-        }
-    );
-};
-userSchema.methods.generateRefreshToken = function () {
     return jwt.sign(
         {
             _id: this._id,
@@ -82,11 +72,29 @@ userSchema.methods.generateRefreshToken = function () {
             username: this.username,
             fullname: this.fullName,
         },
+        process.env.ACCESS_TOKEN_SECRET,
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+        }
+    );
+};
+
+// user ke id se jwt token banane ke liye method
+userSchema.methods.generateRefreshToken = function () {
+    // jwt sign method deta hai taki token generete kar paye
+    return jwt.sign(
+        {
+            // id jis basis par token banana hai
+            _id: this._id,
+        },
+        // secret
         process.env.REFRESH_TOKEN_SECRET,
         {
+            // expiry time
             expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
         }
     );
 };
+
 
 export const User = model("User", userSchema); // in mongodb : users
