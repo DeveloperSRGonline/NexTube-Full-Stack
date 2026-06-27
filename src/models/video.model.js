@@ -18,6 +18,10 @@ const videoSchema = new Schema({
         type:String, // cloudnary
         required:true
     },
+    duration:{
+        type:Number, // actually it came from cloudnary
+        required:true
+    },
     views:{
         type:Number,
         default:0
