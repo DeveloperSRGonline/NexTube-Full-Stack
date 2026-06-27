@@ -70,4 +70,13 @@ const app = express()
 - access token database mein store nahi hoga
 - refresh token database mein store hoga
 - we are using sessions & cookies both
-- 
+- `Middleware` - jane se pahele mujhse mil ke jana
+
+flow of file handling
+- user se file upload karvayenge
+- multer ke through
+- cloudinary kya karta hai - apne server par upload(cloudinary or aws)
+
+- hum kya karegne multer ka use karte huye user se file lekar temperary apne local server pe
+- next step cloudinary ka use karte huye vo local se file lekar cloudinary par upload kar denge
+- directly karne ka fayda hai ki hum in any case kuchh problem hone par reupload kar paye
