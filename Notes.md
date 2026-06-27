@@ -64,3 +64,10 @@ const app = express()
 
 5. Server error responses (500 - 599 )
 ```
+
+- jwt is a barrier token (means ye token jiske bhi pass hoga usko data mil jayega)
+
+- access token database mein store nahi hoga
+- refresh token database mein store hoga
+- we are using sessions & cookies both
+- 
