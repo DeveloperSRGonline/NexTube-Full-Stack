@@ -30,9 +30,17 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User with email or username already exists")
     }
 
+
+
     // local is liye kyoki just locally upload karne ka path liya not cloudinary wala diya
     const avatarLocalPath = req.files?.avatar?.[0]?.path
-    const coverImageLocalPath = req.files?.coverImage?.[0]?.path
+    // const coverImageLocalPath = req.files?.coverImage?.[0]?.path
+
+    let coverImageLocalPath;
+    // first check request has files then check arraay hai and kya ur array mein kuchh hai kya nahi length tab
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
 
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is required")
