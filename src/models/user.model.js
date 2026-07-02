@@ -33,6 +33,7 @@ const userSchema = new Schema(
             type: String, // cloudnary url
         },
         watchHistory: [
+            // every object inside this array will follow the below schema
             {
                 type: Schema.Types.ObjectId,// video id which we will save 
                 ref: "Video",
@@ -51,6 +52,7 @@ const userSchema = new Schema(
     }
 );
 
+// only when password is updating
 userSchema.pre("save", async function () {
     if (!this.isModified("password")) return;
 
@@ -61,7 +63,6 @@ userSchema.pre("save", async function () {
 userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password);// true or false return hoga
 };
-
 
 userSchema.methods.generateAccessToken = function () {
     return jwt.sign(
