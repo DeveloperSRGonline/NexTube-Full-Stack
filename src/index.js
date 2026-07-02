@@ -1,4 +1,3 @@
-import "./loadEnv.js";
 import connectDB from "./db/index.js"
 import {app} from "./app.js"
 
