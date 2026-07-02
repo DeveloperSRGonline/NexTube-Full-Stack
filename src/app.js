@@ -30,4 +30,16 @@ import userRouter from "./routes/user.routes.js"
 // we not writing routes logic here its in routes folder so we need to use middleware to connect routes folder to app
 app.use("/api/v1/users",userRouter)
 
+// Global Error Handler Middleware
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    
+    return res.status(statusCode).json({
+        success: false,
+        message: err.message || "Something went wrong",
+        errors: err.errors || [],
+        statusCode: statusCode
+    });
+});
+
 export { app };
