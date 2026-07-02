@@ -4,6 +4,25 @@ import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../services/cloudinary.service.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+const generateAccessAndRefreshToken = async (userId) => {
+      try {
+        const user = await User.findById(userId) // database mein find
+        const accessToken = user.generateAccessToken()//  generation
+        const refreshToken = user.generateRefreshToken()//  generation
+
+        // basically yuser kya hai user ki saati details of object hi toh hai user ke andar refreshToken add kar deta hai
+        user.refreshToken = refreshToken
+        // save karte time kahi baar password kikk in ho jata hai 
+        await user.save({ validateBeforeSave:false }) // validation mat lagao sidha save kar do , db hai time lagega await laga dete hai
+
+        // finally accessToken and refreshToken ko return kar dete hai
+        return { accessToken, refreshToken }
+
+      } catch (error) {
+        throw new ApiError(500, "Something went wrong while generating access and refresh token")
+      }
+}
+
 const registerUser = asyncHandler(async (req, res) => {
     // step - 1: get user details from frontend
     // step - 2: validation - not empty
@@ -75,4 +94,64 @@ const registerUser = asyncHandler(async (req, res) => {
     )
 })
 
-export { registerUser }
+const loginUser = asyncHandler(async (req,res) => {
+    // req body se data le aao
+    const {email,username,password} = req.body
+
+    if(!username || !email){
+        throw new ApiError(400,"Username or email is required")
+    }
+
+    // fing the user
+    // mongodb return first document
+    const user = await User.findOne({
+        $or:[{email},{username}] // ya toh username ke basis pe ya toh email ke basis pe
+    })
+    // agar user kabhi register tha hi nahi
+    if(!user){
+        throw new ApiError(404,"User does not exist")
+    }
+
+    // password check
+    // yaha pe capital User se nahi small user se method milega isPasswordCorrect , capital ye mongoose ka method hai(ye jo findOne, create, etc. ye sab mongoose ke methods hai) 
+    const isPasswordValid = await user.isPasswordCorrect(password)
+
+    // agar password thik hai toh 
+    if(!isPasswordValid){
+        throw new ApiError(401,"Invalid user credentials")
+    }
+    
+    // access and refresh token ye na baa bar use hoga toh isliye isse ek alag function mein hi bana lete hai
+    const {accessToken,refreshToken} = await generateAccessAndRefreshToken(user._id)
+
+    // send cookie 
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
+
+    const options = {
+        httpOnly:true, 
+        secure:true // only modifiable by server not by client
+    }
+
+    return res
+    .status(200)
+    .cookie("accessToken",accessToken,options)
+    .cookie("refreshToken",refreshToken,options)
+    .json(
+        new ApiResponse(
+            200,
+            {
+                user:loggedInUser,
+                accessToken,
+                refreshToken
+            },
+            "User logged in successfully"
+        )
+    )
+
+})
+
+const logoutUser = asyncHandler(async (req,res) => {
+    
+})
+
+export { registerUser,loginUser }
