@@ -137,6 +137,50 @@ TypeError: argument handler must be a function
 ## Root Cause
 When passing a handler to Express route (e.g., `.post(registerUser)`), the imported value was `undefined`.
 
+---
+
+# Multer File Upload Structure
+
+## `req.files` Object Structure
+
+When files are uploaded via multer, `req.files` contains the uploaded file information.
+
+**Structure:**
+```javascript
+[Object: null prototype] {
+  avatar: [
+    {
+      fieldname: 'avatar',           // Form field name
+      originalname: 'filename.png',   // Original file name
+      encoding: '7bit',              // File encoding
+      mimetype: 'image/png',         // MIME type
+      path: 'public\\temp\\filename.png',  // Local storage path
+      destination: 'public/temp',     // Storage directory
+      filename: 'filename.png',       // Stored filename
+      size: 5711419                   // File size in bytes
+    }
+  ],
+  coverImage: [
+    {
+      fieldname: 'coverImage',
+      originalname: 'filename.png',
+      encoding: '7bit',
+      mimetype: 'image/png',
+      path: 'public\\temp\\filename.png',
+      destination: 'public/temp',
+      filename: 'filename.png',
+      size: 5604647
+    }
+  ]
+}
+```
+
+**Key Points:**
+- `req.files` is an Object with null prototype
+- Each form field (e.g., `avatar`, `coverImage`) contains an array of files
+- Access single file: `req.files?.avatar?.[0]?.path`
+- The `path` property gives the local file path before uploading to cloudinary
+
 ## Debugging Approach
 1. Add console.log before the route definition:
    ```javascript
