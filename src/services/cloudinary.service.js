@@ -4,7 +4,7 @@ import fs from "fs"
 
 const uploadOnCloudinary = async (localFilePath) => {
     try {
-        if (!localFilePath) return null;
+        if (!localFilePath) return null; // get out 😠
 
         // Configure Cloudinary inside the function so process.env is loaded
         cloudinary.config({ 
