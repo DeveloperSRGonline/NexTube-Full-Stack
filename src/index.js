@@ -1,13 +1,8 @@
-// require('dotenv').config({path:"./env"})
-import dotenv from 'dotenv'
+import "./loadEnv.js";
 import connectDB from "./db/index.js"
 import {app} from "./app.js"
 
 const port = process.env.PORT || 8000
-
-dotenv.config({
-    path:"./.env" // give path properly add .env the "dot" is imp
-})
 connectDB()
 .then(() => {
     app.on("error",(error) => {
