@@ -214,3 +214,9 @@ When an imported value is `undefined`, always check the source file for:
 - Syntax errors preventing exports
 - Export/import name mismatches
 - Circular dependencies
+
+- `AccessToken` usually short lived
+- `RefreshToken` usually long lived
+
+- maan lete hai ki aap ka token expire ho gaya secu
+rity reasons ke vajah se toh phir 15 minutes baad phir password enter karna padega aur login karna padega - yahi pe exact location pe hamara aata hai refresh token kya hai hum database meine bhi save rakhte hai and user ke pass bhi save rakhte hai and hum jab bhi phir se login karna ho tab ek endpoint hit karte hai agar aap ka and server ka access token same hoga toh madvali kar lenge and aap ko main naya access token de dunga
